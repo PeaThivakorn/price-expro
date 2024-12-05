@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Price Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&display=swap" rel="stylesheet" />
+    <style>
+        @font-face {
+            font-family: "Digital-7";
+            src: url("fonts/digital-7.ttf") format("truetype");
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+            margin-top: 10px;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+        }
+
+        .layout-container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            gap: 20px;
+        }
+
+        .form-container {
+            flex: 1;
+            max-width: 40%;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .form-container form input,
+        .form-container form button {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-container form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-container form button:hover {
+            background-color: #0056b3;
+        }
+
+        .right-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        button.print-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button.print-btn:hover {
+            background-color: #218838;
+        }
+
+        .price-card-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            width: 100%;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .price-card {
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .price-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .price-card .text-overlay {
+            font-family: "Digital-7", Arial, sans-serif;
+            position: absolute;
+            top: 23%;
+            right: 5%;
+            color: rgb(2, 96, 173);
+            font-size: 28px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .price-card .text-overlaydow {
+            font-family: "Digital-7", Arial, sans-serif;
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            color: rgb(255, 0, 0);
+            font-size: 80px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .price-card .card-number {
+            font-family: Arial, sans-serif;
+            position: absolute;
+            bottom: 10px;
+            left: 5%;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* CSS to hide card number when printing */
+        @media print {
+            .price-card .card-number {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout-container">
+        <!-- Left Side -->
+        <div class="form-container">
+            <form id="priceForm">
+                <label for="normalPriceInput">Normal Price:</label>
+                <input type="number" id="normalPriceInput" placeholder="Enter normal price" required />
+
+                <label for="discountPriceInput">Discount Price:</label>
+                <input type="number" id="discountPriceInput" placeholder="Enter discount price" required />
+
+                <button type="submit">Update Prices</button>
+            </form>
+        </div>
+
+        <!-- Right Side -->
+        <div class="right-container">
+            <button class="print-btn" onclick="printPriceCards()">Print Price Cards</button>
+            <div class="price-card-container" id="priceCardContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        function formatPrice(price) {
+            return Number(price).toLocaleString("en-US") + ".-";
+        }
+
+        const form = document.getElementById("priceForm");
+        const priceCardContainer = document.getElementById("priceCardContainer");
+        let cardCount = 0;
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault(); // Prevent page reload
+
+            if (cardCount >= 4) {
+                alert("ป้ายราคาเต็มหน้ากระดาษแล้ว"); // Alert if more than 18 cards are added
+                return;
+            }
+
+            const normalPriceInput = document.getElementById("normalPriceInput").value;
+            const discountPriceInput = document.getElementById("discountPriceInput").value;
+
+            // Create a new price card
+            const priceCard = document.createElement("div");
+            priceCard.className = "price-card";
+
+            cardCount++; // Increment card count
+
+            priceCard.innerHTML = `
+        <img src="awdawdcawd.jpg" alt="Product Image" />
+        <div class="text-overlay">${formatPrice(normalPriceInput)}</div>
+        <div class="text-overlaydow">${formatPrice(discountPriceInput)}</div>
+        <div class="card-number">#${cardCount}</div> <!-- Show card number -->
+      `;
+
+            // Append the new price card to the container
+            priceCardContainer.appendChild(priceCard);
+
+            // Clear input fields
+            form.reset();
+        });
+
+        function printPriceCards() {
+            const printContents = document.getElementById("priceCardContainer").outerHTML;
+            const originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = `
+  <html>
+    <head>
+      <title>Print</title>
+      <style>
+        @media print {
+          @page {
+            size: A4 landscape; /* กระดาษ A4 แนวนอน */
+            margin: 0.5cm; /* กำหนดระยะขอบ */
+          }
+          body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+          }
+          .price-card-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 คอลัมน์ */
+            grid-template-rows: repeat(2, 1fr); /* 2 แถว */
+            gap: 0.5cm; /* ระยะห่างระหว่างการ์ด */
+            width: 100%;
+            height: 100%;
+          }
+          .price-card {
+            width: 14cm;
+            height: 10cm;
+            overflow: hidden;
+            background: #fff;
+            text-align: center;
+            box-shadow: none;
+            padding: 0;
+          }
+          .price-card img {
+            width: 100%;
+            height: auto;
+          }
+          .price-card .text-overlay {
+            font-family: "Digital-7", Arial, sans-serif;
+            position: absolute;
+            top: 28%;
+            right: 5%;
+            color: rgb(2, 96, 173);
+            font-size: 50px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 5px;
+          }
+          .price-card .text-overlaydow {
+            font-family: "Digital-7", Arial, sans-serif;
+            position: absolute;
+            top: 48%;
+            right: 5%;
+            color: rgb(255, 0, 0);
+            font-size: 148px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 5px;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="price-card-container">
+        ${printContents}
+      </div>
+    </body>
+  </html>
+  `;
+            window.print(); // เปิดหน้าต่างสำหรับพิมพ์
+            document.body.innerHTML = originalContents; // คืนค่าเนื้อหาเดิม
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เลือกหน้าเว็บ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .button {
+            display: inline-block;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .large {
+            background-color: #007bff;
+            width: 200px;
+            height: 100px;
+        }
+
+        .small {
+            background-color: #28a745;
+            width: 200px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>เลือกหน้าเว็บที่ต้องการ</h1>
+        <div class="button-container">
+            <a href="large-price.html" class="button large">ป้ายราคาใหญ่</a>
+            <a href="small-price.html" class="button small">ป้ายราคาเล็ก</a>
+        </div>
+    </div>
+    <script>
+        // หากต้องการเพิ่ม JavaScript สำหรับแอนิเมชันเพิ่มเติม สามารถเพิ่มได้ที่นี่
+        console.log('หน้าเลือกเว็บพร้อมใช้งาน!');
+    </script>
+</body>
+</html>
